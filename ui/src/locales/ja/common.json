@@ -10,7 +10,9 @@
     "activity": "アクティビティ",
     "costs": "コスト",
     "settings": "設定",
-    "approvals": "承認"
+    "approvals": "承認",
+    "org": "組織",
+    "skills": "スキル"
   },
   "actions": {
     "save": "保存",
@@ -23,7 +25,8 @@
     "search": "検索",
     "filter": "フィルター",
     "export": "エクスポート",
-    "import": "インポート"
+    "import": "インポート",
+    "clearAll": "すべてクリア"
   },
   "status": {
     "active": "稼働中",
@@ -31,6 +34,41 @@
     "pending": "保留中",
     "completed": "完了",
     "failed": "失敗",
-    "running": "実行中"
-  }
+    "running": "実行中",
+    "live": "稼働中",
+    "beta": "ベータ"
+  },
+  "sidebar": {
+    "selectCompany": "会社を選択",
+    "newIssue": "新規イシュー",
+    "work": "ワーク",
+    "company": "会社",
+    "newAgent": "新規エージェント",
+    "newProject": "新規プロジェクト",
+    "openSidebar": "サイドバーを開く",
+    "closeSidebar": "サイドバーを閉じる"
+  },
+  "layout": {
+    "skipToMainContent": "メインコンテンツへスキップ",
+    "documentation": "ドキュメント",
+    "instanceSettings": "インスタンス設定",
+    "switchToMode": "{{mode}}モードに切り替え"
+  },
+  "instanceSettings": {
+    "general": "一般",
+    "heartbeats": "ハートビート",
+    "experimental": "実験的機能",
+    "plugins": "プラグイン",
+    "adapters": "アダプター"
+  },
+  "commandPalette": {
+    "searchPlaceholder": "イシュー、エージェント、プロジェクトを検索...",
+    "noResults": "結果が見つかりません。",
+    "actions": "アクション",
+    "createNewIssue": "新規イシューを作成",
+    "createNewAgent": "新規エージェントを作成",
+    "createNewProject": "新規プロジェクトを作成",
+    "pages": "ページ"
+  },
+  "liveCount": "{{count}} 稼働中"
 }

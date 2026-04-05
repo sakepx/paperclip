@@ -10,7 +10,9 @@
     "activity": "Activity",
     "costs": "Costs",
     "settings": "Settings",
-    "approvals": "Approvals"
+    "approvals": "Approvals",
+    "org": "Org",
+    "skills": "Skills"
   },
   "actions": {
     "save": "Save",
@@ -23,7 +25,8 @@
     "search": "Search",
     "filter": "Filter",
     "export": "Export",
-    "import": "Import"
+    "import": "Import",
+    "clearAll": "Clear all"
   },
   "status": {
     "active": "Active",
@@ -31,6 +34,41 @@
     "pending": "Pending",
     "completed": "Completed",
     "failed": "Failed",
-    "running": "Running"
-  }
+    "running": "Running",
+    "live": "live",
+    "beta": "Beta"
+  },
+  "sidebar": {
+    "selectCompany": "Select company",
+    "newIssue": "New Issue",
+    "work": "Work",
+    "company": "Company",
+    "newAgent": "New agent",
+    "newProject": "New project",
+    "openSidebar": "Open sidebar",
+    "closeSidebar": "Close sidebar"
+  },
+  "layout": {
+    "skipToMainContent": "Skip to Main Content",
+    "documentation": "Documentation",
+    "instanceSettings": "Instance Settings",
+    "switchToMode": "Switch to {{mode}} mode"
+  },
+  "instanceSettings": {
+    "general": "General",
+    "heartbeats": "Heartbeats",
+    "experimental": "Experimental",
+    "plugins": "Plugins",
+    "adapters": "Adapters"
+  },
+  "commandPalette": {
+    "searchPlaceholder": "Search issues, agents, projects...",
+    "noResults": "No results found.",
+    "actions": "Actions",
+    "createNewIssue": "Create new issue",
+    "createNewAgent": "Create new agent",
+    "createNewProject": "Create new project",
+    "pages": "Pages"
+  },
+  "liveCount": "{{count}} live"
 }
