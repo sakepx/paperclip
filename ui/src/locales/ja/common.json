@@ -138,5 +138,68 @@
     "filterByType": "タイプで絞り込み",
     "allTypes": "すべてのタイプ",
     "noActivity": "アクティビティはまだありません。"
+  },
+  "mobileNav": {
+    "home": "ホーム",
+    "create": "作成",
+    "mobileNavigation": "モバイルナビゲーション"
+  },
+  "notFound": {
+    "title": "見つかりません",
+    "companyNotFound": "会社が見つかりません",
+    "pageNotFound": "ページが見つかりません",
+    "noCompanyMatch": "プレフィックス「{{prefix}}」に一致する会社がありません。",
+    "routeNotExist": "このルートは存在しません。",
+    "requestedPath": "リクエストされたパス:",
+    "openDashboard": "ダッシュボードを開く",
+    "goHome": "ホームに戻る"
+  },
+  "newGoalDialog": {
+    "newSubGoal": "新規サブゴール",
+    "newGoal": "新規ゴール",
+    "goalTitle": "ゴールのタイトル",
+    "addDescription": "説明を追加...",
+    "parentGoal": "親ゴール",
+    "noParent": "なし",
+    "creating": "作成中…",
+    "createSubGoal": "サブゴールを作成",
+    "createGoal": "ゴールを作成",
+    "levelCompany": "会社",
+    "levelTeam": "チーム",
+    "levelAgent": "エージェント",
+    "levelTask": "タスク"
+  },
+  "newAgentDialog": {
+    "addNewAgent": "新規エージェントを追加",
+    "createNewAgent": "新しいエージェントを作成",
+    "agentDescription": "（ここにどんなエージェントが欲しいか入力してください）",
+    "recommendation": "CEOにエージェントのセットアップを任せることをお勧めします。組織構造を把握しており、レポートライン、権限、アダプターを設定できます。",
+    "askCeo": "CEOに新しいエージェントの作成を依頼",
+    "advancedConfig": "自分で高度な設定をしたい",
+    "back": "戻る",
+    "chooseAdapter": "高度なセットアップ用のアダプタータイプを選択してください。",
+    "recommended": "おすすめ"
+  },
+  "newProjectDialog": {
+    "newProject": "新規プロジェクト",
+    "projectName": "プロジェクト名",
+    "addDescription": "説明を追加...",
+    "repoUrl": "リポジトリURL",
+    "optional": "任意",
+    "repoTooltip": "GitHubリポジトリをリンクすると、エージェントがこのプロジェクトのコードをクローン、読み取り、プッシュできます。",
+    "repoPlaceholder": "https://github.com/org/repo",
+    "localFolder": "ローカルフォルダ",
+    "localFolderTooltip": "ローカルエージェントがこのプロジェクトのファイルを読み書きするマシン上の絶対パスを設定します。",
+    "localFolderPlaceholder": "/absolute/path/to/workspace",
+    "noGoal": "ゴールなし",
+    "allGoalsSelected": "すべてのゴールが選択済みです。",
+    "failedToCreate": "プロジェクトの作成に失敗しました。",
+    "creating": "作成中…",
+    "createProject": "プロジェクトを作成",
+    "statusBacklog": "バックログ",
+    "statusPlanned": "計画済み",
+    "statusInProgress": "進行中",
+    "statusCompleted": "完了",
+    "statusCancelled": "キャンセル"
   }
 }

@@ -138,5 +138,68 @@
     "filterByType": "Filter by type",
     "allTypes": "All types",
     "noActivity": "No activity yet."
+  },
+  "mobileNav": {
+    "home": "Home",
+    "create": "Create",
+    "mobileNavigation": "Mobile navigation"
+  },
+  "notFound": {
+    "title": "Not Found",
+    "companyNotFound": "Company not found",
+    "pageNotFound": "Page not found",
+    "noCompanyMatch": "No company matches prefix \"{{prefix}}\".",
+    "routeNotExist": "This route does not exist.",
+    "requestedPath": "Requested path:",
+    "openDashboard": "Open dashboard",
+    "goHome": "Go home"
+  },
+  "newGoalDialog": {
+    "newSubGoal": "New sub-goal",
+    "newGoal": "New goal",
+    "goalTitle": "Goal title",
+    "addDescription": "Add description...",
+    "parentGoal": "Parent goal",
+    "noParent": "No parent",
+    "creating": "Creating…",
+    "createSubGoal": "Create sub-goal",
+    "createGoal": "Create goal",
+    "levelCompany": "Company",
+    "levelTeam": "Team",
+    "levelAgent": "Agent",
+    "levelTask": "Task"
+  },
+  "newAgentDialog": {
+    "addNewAgent": "Add a new agent",
+    "createNewAgent": "Create a new agent",
+    "agentDescription": "(type in what kind of agent you want here)",
+    "recommendation": "We recommend letting your CEO handle agent setup — they know the org structure and can configure reporting, permissions, and adapters.",
+    "askCeo": "Ask the CEO to create a new agent",
+    "advancedConfig": "I want advanced configuration myself",
+    "back": "Back",
+    "chooseAdapter": "Choose your adapter type for advanced setup.",
+    "recommended": "Recommended"
+  },
+  "newProjectDialog": {
+    "newProject": "New project",
+    "projectName": "Project name",
+    "addDescription": "Add description...",
+    "repoUrl": "Repo URL",
+    "optional": "optional",
+    "repoTooltip": "Link a GitHub repository so agents can clone, read, and push code for this project.",
+    "repoPlaceholder": "https://github.com/org/repo",
+    "localFolder": "Local folder",
+    "localFolderTooltip": "Set an absolute path on this machine where local agents will read and write files for this project.",
+    "localFolderPlaceholder": "/absolute/path/to/workspace",
+    "noGoal": "No goal",
+    "allGoalsSelected": "All goals already selected.",
+    "failedToCreate": "Failed to create project.",
+    "creating": "Creating…",
+    "createProject": "Create project",
+    "statusBacklog": "Backlog",
+    "statusPlanned": "Planned",
+    "statusInProgress": "In Progress",
+    "statusCompleted": "Completed",
+    "statusCancelled": "Cancelled"
   }
 }
