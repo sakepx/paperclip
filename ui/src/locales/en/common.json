@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "issues": "Issues",
+    "agents": "Agents",
+    "projects": "Projects",
+    "goals": "Goals",
+    "routines": "Routines",
+    "inbox": "Inbox",
+    "activity": "Activity",
+    "costs": "Costs",
+    "settings": "Settings",
+    "approvals": "Approvals"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "running": "Running"
+  }
+}

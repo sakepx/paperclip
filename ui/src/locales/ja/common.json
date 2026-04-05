@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "issues": "イシュー",
+    "agents": "エージェント",
+    "projects": "プロジェクト",
+    "goals": "ゴール",
+    "routines": "ルーティン",
+    "inbox": "受信トレイ",
+    "activity": "アクティビティ",
+    "costs": "コスト",
+    "settings": "設定",
+    "approvals": "承認"
+  },
+  "actions": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "close": "閉じる",
+    "confirm": "確認",
+    "search": "検索",
+    "filter": "フィルター",
+    "export": "エクスポート",
+    "import": "インポート"
+  },
+  "status": {
+    "active": "稼働中",
+    "inactive": "停止中",
+    "pending": "保留中",
+    "completed": "完了",
+    "failed": "失敗",
+    "running": "実行中"
+  }
+}
