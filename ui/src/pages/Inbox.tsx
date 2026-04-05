@@ -1,4 +1,5 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "@/lib/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { INBOX_MINE_ISSUE_STATUS_FILTER } from "@paperclipai/shared";
@@ -171,6 +172,7 @@ export function InboxIssueMetaLeading({
   showStatus?: boolean;
   showIdentifier?: boolean;
 }) {
+  const { t } = useTranslation('common');
   return (
     <>
       {showStatus ? (
@@ -205,7 +207,7 @@ export function InboxIssueMetaLeading({
               "text-blue-600 dark:text-blue-400",
             )}
           >
-            Live
+            {t('inbox.live')}
           </span>
         </span>
       )}
@@ -246,8 +248,9 @@ export function InboxIssueTrailingColumns({
   assigneeName: string | null;
   currentUserId: string | null;
 }) {
+  const { t } = useTranslation('common');
   const activityText = timeAgo(issue.lastActivityAt ?? issue.lastExternalCommentAt ?? issue.updatedAt);
-  const userLabel = formatAssigneeUserLabel(issue.assigneeUserId, currentUserId) ?? "User";
+  const userLabel = formatAssigneeUserLabel(issue.assigneeUserId, currentUserId) ?? t('inbox.user');
 
   return (
     <span
@@ -278,7 +281,7 @@ export function InboxIssueTrailingColumns({
 
           return (
             <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
-              Unassigned
+              {t('inbox.unassigned')}
             </span>
           );
         }
@@ -386,6 +389,7 @@ export function FailedRunInboxRow({
   selected?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation('common');
   const issueId = readIssueIdFromRun(run);
   const issue = issueId ? issueById.get(issueId) ?? null : null;
   const displayError = runFailureMessage(run);
@@ -408,7 +412,7 @@ export function FailedRunInboxRow({
                   "inline-flex h-4 w-4 items-center justify-center rounded-full transition-colors",
                   "hover:bg-blue-500/20",
                 )}
-                aria-label="Mark as read"
+                aria-label={t('inbox.markAsRead')}
               >
                 <span className={cn(
                   "block h-2 w-2 rounded-full transition-opacity duration-300",
@@ -422,7 +426,7 @@ export function FailedRunInboxRow({
                 onClick={onArchive}
                 disabled={archiveDisabled}
                 className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
-                aria-label="Dismiss from inbox"
+                aria-label={t('inbox.dismissFromInbox')}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -474,14 +478,14 @@ export function FailedRunInboxRow({
             disabled={isRetrying}
           >
             <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
-            {isRetrying ? "Retrying…" : "Retry"}
+            {isRetrying ? t('inbox.retrying') : t('inbox.retry')}
           </Button>
           {!showUnreadSlot && (
             <button
               type="button"
               onClick={onDismiss}
               className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover:opacity-100"
-              aria-label="Dismiss"
+              aria-label={t('inbox.dismiss')}
             >
               <X className="h-4 w-4" />
             </button>
@@ -498,14 +502,14 @@ export function FailedRunInboxRow({
           disabled={isRetrying}
         >
           <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
-          {isRetrying ? "Retrying…" : "Retry"}
+          {isRetrying ? t('inbox.retrying') : t('inbox.retry')}
         </Button>
         {!showUnreadSlot && (
           <button
             type="button"
             onClick={onDismiss}
             className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
-            aria-label="Dismiss"
+            aria-label={t('inbox.dismiss')}
           >
             <X className="h-4 w-4" />
           </button>
@@ -540,6 +544,7 @@ function ApprovalInboxRow({
   selected?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation('common');
   const Icon = typeIcon[approval.type] ?? defaultTypeIcon;
   const label = approvalLabel(approval.type, approval.payload as Record<string, unknown> | null);
   const showResolutionButtons =
@@ -564,7 +569,7 @@ function ApprovalInboxRow({
                   "inline-flex h-4 w-4 items-center justify-center rounded-full transition-colors",
                   "hover:bg-blue-500/20",
                 )}
-                aria-label="Mark as read"
+                aria-label={t('inbox.markAsRead')}
               >
                 <span className={cn(
                   "block h-2 w-2 rounded-full transition-opacity duration-300",
@@ -578,7 +583,7 @@ function ApprovalInboxRow({
                 onClick={onArchive}
                 disabled={archiveDisabled}
                 className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
-                aria-label="Dismiss from inbox"
+                aria-label={t('inbox.dismissFromInbox')}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -618,7 +623,7 @@ function ApprovalInboxRow({
               onClick={onApprove}
               disabled={isPending}
             >
-              Approve
+              {t('inbox.approve')}
             </Button>
             <Button
               variant="destructive"
@@ -627,7 +632,7 @@ function ApprovalInboxRow({
               onClick={onReject}
               disabled={isPending}
             >
-              Reject
+              {t('inbox.reject')}
             </Button>
           </div>
         ) : null}
@@ -640,7 +645,7 @@ function ApprovalInboxRow({
             onClick={onApprove}
             disabled={isPending}
           >
-            Approve
+            {t('inbox.approve')}
           </Button>
           <Button
             variant="destructive"
@@ -649,7 +654,7 @@ function ApprovalInboxRow({
             onClick={onReject}
             disabled={isPending}
           >
-            Reject
+            {t('inbox.reject')}
           </Button>
         </div>
       ) : null}
@@ -680,10 +685,11 @@ function JoinRequestInboxRow({
   selected?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation('common');
   const label =
     joinRequest.requestType === "human"
-      ? "Human join request"
-      : `Agent join request${joinRequest.agentName ? `: ${joinRequest.agentName}` : ""}`;
+      ? t('inbox.humanJoinRequest')
+      : `${t('inbox.agentJoinRequest')}${joinRequest.agentName ? `: ${joinRequest.agentName}` : ""}`;
   const showUnreadSlot = unreadState !== null;
   const showUnreadDot = unreadState === "visible" || unreadState === "fading";
 
@@ -703,7 +709,7 @@ function JoinRequestInboxRow({
                   "inline-flex h-4 w-4 items-center justify-center rounded-full transition-colors",
                   "hover:bg-blue-500/20",
                 )}
-                aria-label="Mark as read"
+                aria-label={t('inbox.markAsRead')}
               >
                 <span className={cn(
                   "block h-2 w-2 rounded-full transition-opacity duration-300",
@@ -717,7 +723,7 @@ function JoinRequestInboxRow({
                 onClick={onArchive}
                 disabled={archiveDisabled}
                 className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
-                aria-label="Dismiss from inbox"
+                aria-label={t('inbox.dismissFromInbox')}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -738,7 +744,7 @@ function JoinRequestInboxRow({
             </span>
             <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
               <span>requested {timeAgo(joinRequest.createdAt)} from IP {joinRequest.requestIp}</span>
-              {joinRequest.adapterType && <span>adapter: {joinRequest.adapterType}</span>}
+              {joinRequest.adapterType && <span>{t('inbox.adapter')} {joinRequest.adapterType}</span>}
             </span>
           </span>
         </div>
@@ -749,7 +755,7 @@ function JoinRequestInboxRow({
             onClick={onApprove}
             disabled={isPending}
           >
-            Approve
+            {t('inbox.approve')}
           </Button>
           <Button
             variant="destructive"
@@ -758,7 +764,7 @@ function JoinRequestInboxRow({
             onClick={onReject}
             disabled={isPending}
           >
-            Reject
+            {t('inbox.reject')}
           </Button>
         </div>
       </div>
@@ -769,7 +775,7 @@ function JoinRequestInboxRow({
           onClick={onApprove}
           disabled={isPending}
         >
-          Approve
+          {t('inbox.approve')}
         </Button>
         <Button
           variant="destructive"
@@ -778,7 +784,7 @@ function JoinRequestInboxRow({
           onClick={onReject}
           disabled={isPending}
         >
-          Reject
+          {t('inbox.reject')}
         </Button>
       </div>
     </div>
@@ -786,6 +792,7 @@ function JoinRequestInboxRow({
 }
 
 export function Inbox() {
+  const { t } = useTranslation('common');
   const { selectedCompanyId } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
   const navigate = useNavigate();
@@ -814,7 +821,7 @@ export function Inbox() {
   const issueLinkState = useMemo(
     () =>
       createIssueDetailLocationState(
-        "Inbox",
+        t('nav.inbox'),
         `${location.pathname}${location.search}${location.hash}`,
         "inbox",
       ),
@@ -847,7 +854,7 @@ export function Inbox() {
   });
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "Inbox" }]);
+    setBreadcrumbs([{ label: t('nav.inbox') }]);
   }, [setBreadcrumbs]);
 
   useEffect(() => {
@@ -1144,7 +1151,7 @@ export function Inbox() {
       navigate(`/approvals/${id}?resolved=approved`);
     },
     onError: (err) => {
-      setActionError(err instanceof Error ? err.message : "Failed to approve");
+      setActionError(err instanceof Error ? err.message : t('inbox.failedToApprove'));
     },
   });
 
@@ -1155,7 +1162,7 @@ export function Inbox() {
       queryClient.invalidateQueries({ queryKey: queryKeys.approvals.list(selectedCompanyId!) });
     },
     onError: (err) => {
-      setActionError(err instanceof Error ? err.message : "Failed to reject");
+      setActionError(err instanceof Error ? err.message : t('inbox.failedToReject'));
     },
   });
 
@@ -1170,7 +1177,7 @@ export function Inbox() {
       queryClient.invalidateQueries({ queryKey: queryKeys.companies.all });
     },
     onError: (err) => {
-      setActionError(err instanceof Error ? err.message : "Failed to approve join request");
+      setActionError(err instanceof Error ? err.message : t('inbox.failedToApproveJoin'));
     },
   });
 
@@ -1183,7 +1190,7 @@ export function Inbox() {
       queryClient.invalidateQueries({ queryKey: queryKeys.sidebarBadges(selectedCompanyId!) });
     },
     onError: (err) => {
-      setActionError(err instanceof Error ? err.message : "Failed to reject join request");
+      setActionError(err instanceof Error ? err.message : t('inbox.failedToRejectJoin'));
     },
   });
 
@@ -1205,7 +1212,7 @@ export function Inbox() {
         payload,
       });
       if (!("id" in result)) {
-        throw new Error(result.message ?? "Retry was skipped.");
+        throw new Error(result.message ?? t('inbox.retrySkipped'));
       }
       return { newRun: result, originalRun: run };
     },
@@ -1253,7 +1260,7 @@ export function Inbox() {
       invalidateInboxIssueQueries();
     },
     onError: (err, id) => {
-      setActionError(err instanceof Error ? err.message : "Failed to archive issue");
+      setActionError(err instanceof Error ? err.message : t('inbox.failedToArchive'));
       setArchivingIssueIds((prev) => {
         const next = new Set(prev);
         next.delete(id);
@@ -1523,7 +1530,7 @@ export function Inbox() {
   }, [selectedIndex]);
 
   if (!selectedCompanyId) {
-    return <EmptyState icon={InboxIcon} message="Select a company to view inbox." />;
+    return <EmptyState icon={InboxIcon} message={t('inbox.selectCompany')} />;
   }
 
   const hasRunFailures = failedRuns.length > 0;
@@ -1572,14 +1579,14 @@ export function Inbox() {
             items={[
               {
                 value: "mine",
-                label: "Mine",
+                label: t('inbox.tabMine'),
               },
               {
                 value: "recent",
-                label: "Recent",
+                label: t('inbox.tabRecent'),
               },
-              { value: "unread", label: "Unread" },
-              { value: "all", label: "All" },
+              { value: "unread", label: t('inbox.tabUnread') },
+              { value: "all", label: t('inbox.tabAll') },
             ]}
           />
         </Tabs>
@@ -1589,7 +1596,7 @@ export function Inbox() {
             <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search inbox…"
+              placeholder={t('inbox.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="h-8 w-[180px] pl-8 text-xs sm:w-[220px]"
@@ -1604,17 +1611,17 @@ export function Inbox() {
                 className="h-8 shrink-0 px-2 text-xs text-muted-foreground hover:text-foreground"
               >
                 <Columns3 className="mr-1 h-3.5 w-3.5" />
-                Show / hide columns
+                {t('inbox.showHideColumns')}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[300px] rounded-xl border-border/70 p-1.5 shadow-xl shadow-black/10">
               <DropdownMenuLabel className="px-2 pb-1 pt-1.5">
                 <div className="space-y-1">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                    Desktop issue rows
+                    {t('inbox.desktopIssueRows')}
                   </div>
                   <div className="text-sm font-medium text-foreground">
-                    Choose which inbox columns stay visible
+                    {t('inbox.chooseColumns')}
                   </div>
                 </div>
               </DropdownMenuLabel>
@@ -1642,7 +1649,7 @@ export function Inbox() {
                 onSelect={() => setIssueColumns(DEFAULT_INBOX_ISSUE_COLUMNS)}
                 className="rounded-lg px-3 py-2 text-sm"
               >
-                Reset defaults
+                {t('inbox.resetDefaults')}
                 <span className="ml-auto text-xs text-muted-foreground">status, id, updated</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -1657,19 +1664,19 @@ export function Inbox() {
                 onClick={() => setShowMarkAllReadConfirm(true)}
                 disabled={markAllReadMutation.isPending}
               >
-                {markAllReadMutation.isPending ? "Marking…" : "Mark all as read"}
+                {markAllReadMutation.isPending ? t('inbox.marking') : t('inbox.markAllAsRead')}
               </Button>
               <Dialog open={showMarkAllReadConfirm} onOpenChange={setShowMarkAllReadConfirm}>
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Mark all as read?</DialogTitle>
+                    <DialogTitle>{t('inbox.markAllConfirm')}</DialogTitle>
                     <DialogDescription>
-                      This will mark {unreadIssueIds.length} unread {unreadIssueIds.length === 1 ? "item" : "items"} as read.
+                      {t('inbox.markAllDesc', { count: unreadIssueIds.length })}
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
                     <Button variant="outline" onClick={() => setShowMarkAllReadConfirm(false)}>
-                      Cancel
+                      {t('actions.cancel')}
                     </Button>
                     <Button
                       onClick={() => {
@@ -1677,7 +1684,7 @@ export function Inbox() {
                         markAllReadMutation.mutate(unreadIssueIds);
                       }}
                     >
-                      Mark all as read
+                      {t('inbox.markAllAsRead')}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
@@ -1694,15 +1701,15 @@ export function Inbox() {
             onValueChange={(value) => setAllCategoryFilter(value as InboxCategoryFilter)}
           >
             <SelectTrigger className="h-8 w-[170px] text-xs">
-              <SelectValue placeholder="Category" />
+              <SelectValue placeholder={t('inbox.category')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="everything">All categories</SelectItem>
-              <SelectItem value="issues_i_touched">My recent issues</SelectItem>
-              <SelectItem value="join_requests">Join requests</SelectItem>
-              <SelectItem value="approvals">Approvals</SelectItem>
-              <SelectItem value="failed_runs">Failed runs</SelectItem>
-              <SelectItem value="alerts">Alerts</SelectItem>
+              <SelectItem value="everything">{t('inbox.allCategories')}</SelectItem>
+              <SelectItem value="issues_i_touched">{t('inbox.myRecentIssues')}</SelectItem>
+              <SelectItem value="join_requests">{t('inbox.joinRequests')}</SelectItem>
+              <SelectItem value="approvals">{t('inbox.approvals')}</SelectItem>
+              <SelectItem value="failed_runs">{t('inbox.failedRuns')}</SelectItem>
+              <SelectItem value="alerts">{t('inbox.alerts')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -1712,12 +1719,12 @@ export function Inbox() {
               onValueChange={(value) => setAllApprovalFilter(value as InboxApprovalFilter)}
             >
               <SelectTrigger className="h-8 w-[170px] text-xs">
-                <SelectValue placeholder="Approval status" />
+                <SelectValue placeholder={t('inbox.approvalStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All approval statuses</SelectItem>
-                <SelectItem value="actionable">Needs action</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="all">{t('inbox.allApprovalStatuses')}</SelectItem>
+                <SelectItem value="actionable">{t('inbox.needsAction')}</SelectItem>
+                <SelectItem value="resolved">{t('inbox.resolved')}</SelectItem>
               </SelectContent>
             </Select>
           )}
@@ -1736,14 +1743,14 @@ export function Inbox() {
           icon={searchQuery.trim() ? Search : InboxIcon}
           message={
             searchQuery.trim()
-              ? "No inbox items match your search."
+              ? t('inbox.noMatchSearch')
               : tab === "mine"
-              ? "Inbox zero."
+              ? t('inbox.inboxZero')
               : tab === "unread"
-              ? "No new inbox items."
+              ? t('inbox.noNewItems')
               : tab === "recent"
-                ? "No recent inbox items."
-                : "No inbox items match these filters."
+                ? t('inbox.noRecentItems')
+                : t('inbox.noMatchFilters')
           }
         />
       )}
@@ -1776,7 +1783,7 @@ export function Inbox() {
                     <div key="today-divider" className="flex items-center gap-3 px-4 my-2">
                       <div className="flex-1 border-t border-zinc-600" />
                       <span className="shrink-0 text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-                        Earlier
+                        {t('inbox.earlier')}
                       </span>
                     </div>,
                   );
@@ -1969,7 +1976,7 @@ export function Inbox() {
           {showSeparatorBefore("alerts") && <Separator />}
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              Alerts
+              {t('inbox.alerts')}
             </h3>
             <div className="divide-y divide-border border border-border">
               {showAggregateAgentError && (
@@ -1980,15 +1987,14 @@ export function Inbox() {
                   >
                     <AlertTriangle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
                     <span className="text-sm">
-                      <span className="font-medium">{dashboard!.agents.error}</span>{" "}
-                      {dashboard!.agents.error === 1 ? "agent has" : "agents have"} errors
+                      {t('inbox.agentErrors', { count: dashboard!.agents.error })}
                     </span>
                   </Link>
                   <button
                     type="button"
                     onClick={() => dismiss("alert:agent-errors")}
                     className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
-                    aria-label="Dismiss"
+                    aria-label={t('inbox.dismiss')}
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -2002,16 +2008,16 @@ export function Inbox() {
                   >
                     <AlertTriangle className="h-4 w-4 shrink-0 text-yellow-400" />
                     <span className="text-sm">
-                      Budget at{" "}
+                      {t('inbox.budgetAt')}{" "}
                       <span className="font-medium">{dashboard!.costs.monthUtilizationPercent}%</span>{" "}
-                      utilization this month
+                      {t('inbox.utilizationThisMonth')}
                     </span>
                   </Link>
                   <button
                     type="button"
                     onClick={() => dismiss("alert:budget")}
                     className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
-                    aria-label="Dismiss"
+                    aria-label={t('inbox.dismiss')}
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
