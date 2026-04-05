@@ -26,7 +26,14 @@
     "filter": "フィルター",
     "export": "エクスポート",
     "import": "インポート",
-    "clearAll": "すべてクリア"
+    "clearAll": "すべてクリア",
+    "getStarted": "はじめる",
+    "addGoal": "ゴールを追加",
+    "newGoal": "新規ゴール",
+    "addProject": "プロジェクトを追加",
+    "newAgent": "新規エージェント",
+    "createOneHere": "ここで作成",
+    "openBudgets": "予算を開く"
   },
   "status": {
     "active": "稼働中",
@@ -36,7 +43,10 @@
     "failed": "失敗",
     "running": "実行中",
     "live": "稼働中",
-    "beta": "ベータ"
+    "beta": "ベータ",
+    "paused": "一時停止",
+    "error": "エラー",
+    "all": "すべて"
   },
   "sidebar": {
     "selectCompany": "会社を選択",
@@ -70,5 +80,63 @@
     "createNewProject": "新規プロジェクトを作成",
     "pages": "ページ"
   },
-  "liveCount": "{{count}} 稼働中"
+  "liveCount": "{{count}} 稼働中",
+  "dashboard": {
+    "welcome": "Paperclipへようこそ。最初の会社とエージェントをセットアップして始めましょう。",
+    "selectCompany": "ダッシュボードを表示するには、会社を作成または選択してください。",
+    "noAgents": "エージェントがいません。",
+    "agentsEnabled": "有効なエージェント",
+    "running": "実行中",
+    "paused": "一時停止",
+    "errors": "エラー",
+    "tasksInProgress": "進行中のタスク",
+    "open": "オープン",
+    "blocked": "ブロック中",
+    "monthSpend": "今月の支出",
+    "budgetOf": "{{amount}}予算の{{percent}}%",
+    "unlimitedBudget": "無制限予算",
+    "pendingApprovals": "承認待ち",
+    "budgetOverrides": "ボードレビュー待ちの予算オーバーライドが{{count}}件",
+    "awaitingReview": "ボードレビュー待ち",
+    "activeIncidents": "{{count}}件のアクティブな予算インシデント",
+    "activeIncidents_plural": "{{count}}件のアクティブな予算インシデント",
+    "incidentDetails": "{{agents}}エージェント一時停止 · {{projects}}プロジェクト一時停止 · {{approvals}}件の承認待ち",
+    "runActivity": "実行アクティビティ",
+    "issuesByPriority": "優先度別イシュー",
+    "issuesByStatus": "ステータス別イシュー",
+    "successRate": "成功率",
+    "last14Days": "過去14日間",
+    "recentActivity": "最近のアクティビティ",
+    "recentTasks": "最近のタスク",
+    "noTasksYet": "タスクはまだありません。"
+  },
+  "issues": {
+    "selectCompany": "イシューを表示するには会社を選択してください。"
+  },
+  "agents": {
+    "selectCompany": "エージェントを表示するには会社を選択してください。",
+    "createFirst": "最初のエージェントを作成して始めましょう。",
+    "filters": "フィルター",
+    "showTerminated": "終了済みを表示",
+    "agentCount": "{{count}}件のエージェント",
+    "agentCount_plural": "{{count}}件のエージェント",
+    "noMatch": "選択したフィルターに一致するエージェントがありません。",
+    "noOrgHierarchy": "組織階層が定義されていません。",
+    "liveIndicator": "ライブ",
+    "liveIndicatorCount": "ライブ ({{count}})"
+  },
+  "goals": {
+    "selectCompany": "ゴールを表示するには会社を選択してください。",
+    "noGoals": "ゴールはまだありません。"
+  },
+  "projects": {
+    "selectCompany": "プロジェクトを表示するには会社を選択してください。",
+    "noProjects": "プロジェクトはまだありません。"
+  },
+  "activity": {
+    "selectCompany": "アクティビティを表示するには会社を選択してください。",
+    "filterByType": "タイプで絞り込み",
+    "allTypes": "すべてのタイプ",
+    "noActivity": "アクティビティはまだありません。"
+  }
 }

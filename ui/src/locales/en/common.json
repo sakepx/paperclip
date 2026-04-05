@@ -26,7 +26,14 @@
     "filter": "Filter",
     "export": "Export",
     "import": "Import",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "getStarted": "Get Started",
+    "addGoal": "Add Goal",
+    "newGoal": "New Goal",
+    "addProject": "Add Project",
+    "newAgent": "New Agent",
+    "createOneHere": "Create one here",
+    "openBudgets": "Open budgets"
   },
   "status": {
     "active": "Active",
@@ -36,7 +43,10 @@
     "failed": "Failed",
     "running": "Running",
     "live": "live",
-    "beta": "Beta"
+    "beta": "Beta",
+    "paused": "Paused",
+    "error": "Error",
+    "all": "All"
   },
   "sidebar": {
     "selectCompany": "Select company",
@@ -70,5 +80,63 @@
     "createNewProject": "Create new project",
     "pages": "Pages"
   },
-  "liveCount": "{{count}} live"
+  "liveCount": "{{count}} live",
+  "dashboard": {
+    "welcome": "Welcome to Paperclip. Set up your first company and agent to get started.",
+    "selectCompany": "Create or select a company to view the dashboard.",
+    "noAgents": "You have no agents.",
+    "agentsEnabled": "Agents Enabled",
+    "running": "running",
+    "paused": "paused",
+    "errors": "errors",
+    "tasksInProgress": "Tasks In Progress",
+    "open": "open",
+    "blocked": "blocked",
+    "monthSpend": "Month Spend",
+    "budgetOf": "{{percent}}% of {{amount}} budget",
+    "unlimitedBudget": "Unlimited budget",
+    "pendingApprovals": "Pending Approvals",
+    "budgetOverrides": "{{count}} budget overrides awaiting board review",
+    "awaitingReview": "Awaiting board review",
+    "activeIncidents": "{{count}} active budget incident",
+    "activeIncidents_plural": "{{count}} active budget incidents",
+    "incidentDetails": "{{agents}} agents paused · {{projects}} projects paused · {{approvals}} pending budget approvals",
+    "runActivity": "Run Activity",
+    "issuesByPriority": "Issues by Priority",
+    "issuesByStatus": "Issues by Status",
+    "successRate": "Success Rate",
+    "last14Days": "Last 14 days",
+    "recentActivity": "Recent Activity",
+    "recentTasks": "Recent Tasks",
+    "noTasksYet": "No tasks yet."
+  },
+  "issues": {
+    "selectCompany": "Select a company to view issues."
+  },
+  "agents": {
+    "selectCompany": "Select a company to view agents.",
+    "createFirst": "Create your first agent to get started.",
+    "filters": "Filters",
+    "showTerminated": "Show terminated",
+    "agentCount": "{{count}} agent",
+    "agentCount_plural": "{{count}} agents",
+    "noMatch": "No agents match the selected filter.",
+    "noOrgHierarchy": "No organizational hierarchy defined.",
+    "liveIndicator": "Live",
+    "liveIndicatorCount": "Live ({{count}})"
+  },
+  "goals": {
+    "selectCompany": "Select a company to view goals.",
+    "noGoals": "No goals yet."
+  },
+  "projects": {
+    "selectCompany": "Select a company to view projects.",
+    "noProjects": "No projects yet."
+  },
+  "activity": {
+    "selectCompany": "Select a company to view activity.",
+    "filterByType": "Filter by type",
+    "allTypes": "All types",
+    "noActivity": "No activity yet."
+  }
 }
