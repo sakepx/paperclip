@@ -1167,20 +1167,20 @@ function SummaryRow({ label, children }: { label: string; children: React.ReactN
 
 function LatestRunCard({ runs, agentId }: { runs: HeartbeatRun[]; agentId: string }) {
   const { t } = useTranslation('common');
-  if (runs.length === 0) return null;
 
   const sorted = [...runs].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
-  const liveRun = sorted.find((r) => r.status === "running" || r.status === "queued");
-  const run = liveRun ?? sorted[0];
-  const isLive = run.status === "running" || run.status === "queued";
-  const statusInfo = runStatusIcons[run.status] ?? { icon: Clock, color: "text-neutral-400" };
-  const StatusIcon = statusInfo.icon;
-  const summaryRaw = run.resultJson
-    ? String((run.resultJson as Record<string, unknown>).summary ?? (run.resultJson as Record<string, unknown>).result ?? "")
-    : run.error ?? "";
+  const run = sorted.length > 0
+    ? (sorted.find((r) => r.status === "running" || r.status === "queued") ?? sorted[0])
+    : null;
+
+  const summaryRaw = run
+    ? (run.resultJson
+        ? String((run.resultJson as Record<string, unknown>).summary ?? (run.resultJson as Record<string, unknown>).result ?? "")
+        : run.error ?? "")
+    : "";
 
   // Extract a clean 2-3 line excerpt: first non-empty, non-header, non-list-mark lines
   const summary = useMemo(() => {
@@ -1199,6 +1199,12 @@ function LatestRunCard({ runs, agentId }: { runs: HeartbeatRun[]; agentId: strin
     }
     return excerpt.join(" ");
   }, [summaryRaw]);
+
+  if (!run) return null;
+
+  const isLive = run.status === "running" || run.status === "queued";
+  const statusInfo = runStatusIcons[run.status] ?? { icon: Clock, color: "text-neutral-400" };
+  const StatusIcon = statusInfo.icon;
 
   return (
     <div className="space-y-3">
