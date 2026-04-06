@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -6,14 +7,14 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 
 type SchedulePreset = "every_minute" | "every_hour" | "every_day" | "weekdays" | "weekly" | "monthly" | "custom";
 
-const PRESETS: { value: SchedulePreset; label: string }[] = [
-  { value: "every_minute", label: "Every minute" },
-  { value: "every_hour", label: "Every hour" },
-  { value: "every_day", label: "Every day" },
-  { value: "weekdays", label: "Weekdays" },
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
-  { value: "custom", label: "Custom (cron)" },
+const PRESET_KEYS: { value: SchedulePreset; i18nKey: string }[] = [
+  { value: "every_minute", i18nKey: "scheduleEditor.everyMinute" },
+  { value: "every_hour", i18nKey: "scheduleEditor.everyHour" },
+  { value: "every_day", i18nKey: "scheduleEditor.everyDay" },
+  { value: "weekdays", i18nKey: "scheduleEditor.weekdays" },
+  { value: "weekly", i18nKey: "scheduleEditor.weekly" },
+  { value: "monthly", i18nKey: "scheduleEditor.monthly" },
+  { value: "custom", i18nKey: "scheduleEditor.customCron" },
 ];
 
 const HOURS = Array.from({ length: 24 }, (_, i) => ({
@@ -153,6 +154,7 @@ export function ScheduleEditor({
   value: string;
   onChange: (cron: string) => void;
 }) {
+  const { t } = useTranslation('common');
   const parsed = useMemo(() => parseCronToPreset(value), [value]);
   const [preset, setPreset] = useState<SchedulePreset>(parsed.preset);
   const [hour, setHour] = useState(parsed.hour);
@@ -196,12 +198,12 @@ export function ScheduleEditor({
     <div className="space-y-3">
       <Select value={preset} onValueChange={(v) => handlePresetChange(v as SchedulePreset)}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Choose frequency..." />
+          <SelectValue placeholder={t('scheduleEditor.chooseFrequency')} />
         </SelectTrigger>
         <SelectContent>
-          {PRESETS.map((p) => (
+          {PRESET_KEYS.map((p) => (
             <SelectItem key={p.value} value={p.value}>
-              {p.label}
+              {t(p.i18nKey)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -219,14 +221,14 @@ export function ScheduleEditor({
             className="font-mono text-sm"
           />
           <p className="text-xs text-muted-foreground">
-            Five fields: minute hour day-of-month month day-of-week
+            {t('scheduleEditor.cronHelp')}
           </p>
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
           {preset !== "every_minute" && preset !== "every_hour" && (
             <>
-              <span className="text-sm text-muted-foreground">at</span>
+              <span className="text-sm text-muted-foreground">{t('scheduleEditor.at')}</span>
               <Select
                 value={hour}
                 onValueChange={(h) => {
@@ -269,7 +271,7 @@ export function ScheduleEditor({
 
           {preset === "every_hour" && (
             <>
-              <span className="text-sm text-muted-foreground">at minute</span>
+              <span className="text-sm text-muted-foreground">{t('scheduleEditor.atMinute')}</span>
               <Select
                 value={minute}
                 onValueChange={(m) => {
@@ -293,7 +295,7 @@ export function ScheduleEditor({
 
           {preset === "weekly" && (
             <>
-              <span className="text-sm text-muted-foreground">on</span>
+              <span className="text-sm text-muted-foreground">{t('scheduleEditor.on')}</span>
               <div className="flex gap-1">
                 {DAYS_OF_WEEK.map((d) => (
                   <Button
@@ -316,7 +318,7 @@ export function ScheduleEditor({
 
           {preset === "monthly" && (
             <>
-              <span className="text-sm text-muted-foreground">on day</span>
+              <span className="text-sm text-muted-foreground">{t('scheduleEditor.onDay')}</span>
               <Select
                 value={dayOfMonth}
                 onValueChange={(dom) => {

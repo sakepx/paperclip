@@ -149,6 +149,22 @@ export function parseFrontmatter(content: string): { data: FrontmatterData; body
   return Object.keys(data).length > 0 ? { data, body } : null;
 }
 
+export const FRONTMATTER_FIELD_LABEL_KEYS: Record<string, string> = {
+  name: "packageFileTree.name",
+  title: "packageFileTree.title",
+  kind: "packageFileTree.kind",
+  reportsTo: "packageFileTree.reportsTo",
+  skills: "packageFileTree.skills",
+  status: "packageFileTree.status",
+  description: "packageFileTree.description",
+  priority: "packageFileTree.priority",
+  assignee: "packageFileTree.assignee",
+  project: "packageFileTree.project",
+  recurring: "packageFileTree.recurring",
+  targetDate: "packageFileTree.targetDate",
+};
+
+/** @deprecated Use FRONTMATTER_FIELD_LABEL_KEYS with t() instead */
 export const FRONTMATTER_FIELD_LABELS: Record<string, string> = {
   name: "Name",
   title: "Title",

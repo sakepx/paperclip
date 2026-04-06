@@ -9,6 +9,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { cn, projectWorkspaceUrl } from "../lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check, Copy, GitBranch, FolderOpen, Pencil, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 /* -------------------------------------------------------------------------- */
 /*  Utility helpers (mirrored from IssueProperties for self-containment)      */
@@ -93,29 +94,30 @@ function CopyableInline({ value, label, mono }: { value: string; label?: string;
   );
 }
 
-function workspaceModeLabel(mode: string | null | undefined) {
+function workspaceModeLabel(mode: string | null | undefined, t: (key: string) => string) {
   switch (mode) {
-    case "isolated_workspace": return "Isolated workspace";
-    case "operator_branch": return "Operator branch";
-    case "cloud_sandbox": return "Cloud sandbox";
-    case "adapter_managed": return "Adapter managed";
-    default: return "Workspace";
+    case "isolated_workspace": return t('issueWorkspace.isolatedWorkspace');
+    case "operator_branch": return t('issueWorkspace.operatorBranch');
+    case "cloud_sandbox": return t('issueWorkspace.cloudSandbox');
+    case "adapter_managed": return t('issueWorkspace.adapterManaged');
+    default: return t('issueWorkspace.workspace');
   }
 }
 
 function configuredWorkspaceLabel(
   selection: string | null | undefined,
   reusableWorkspace: ExecutionWorkspace | null,
+  t: (key: string) => string,
 ) {
   switch (selection) {
     case "isolated_workspace":
-      return "New isolated workspace";
+      return t('issueWorkspace.newIsolatedWorkspace');
     case "reuse_existing":
       return reusableWorkspace?.mode === "isolated_workspace"
-        ? "Existing isolated workspace"
-        : "Reuse existing workspace";
+        ? t('issueWorkspace.existingIsolatedWorkspace')
+        : t('issueWorkspace.reuseExistingWorkspace');
     default:
-      return "Project default";
+      return t('issueWorkspace.projectDefault');
   }
 }
 
@@ -191,6 +193,7 @@ export function IssueWorkspaceCard({
   livePreview = false,
   onDraftChange,
 }: IssueWorkspaceCardProps) {
+  const { t } = useTranslation('common');
   const { selectedCompanyId } = useCompany();
   const companyId = issue.companyId ?? selectedCompanyId;
   const [editing, setEditing] = useState(initialEditing);
@@ -325,8 +328,8 @@ export function IssueWorkspaceCard({
         <div className="flex items-center gap-2 text-sm font-medium text-foreground">
           <GitBranch className="h-3.5 w-3.5 text-muted-foreground" />
           {activeNonDefaultWorkspace && workspace
-            ? workspaceModeLabel(workspace.mode)
-            : configuredWorkspaceLabel(currentSelection, selectedReusableExecutionWorkspace)}
+            ? workspaceModeLabel(workspace.mode, t)
+            : configuredWorkspaceLabel(currentSelection, selectedReusableExecutionWorkspace, t)}
           {workspace ? statusBadge(workspace.status) : statusBadge("idle")}
         </div>
         <div className="flex items-center gap-1">
@@ -386,10 +389,10 @@ export function IssueWorkspaceCard({
           {!workspace && (
             <div className="text-muted-foreground">
               {currentSelection === "isolated_workspace"
-                ? "A fresh isolated workspace will be created when this issue runs."
+                ? t('issueWorkspace.freshIsolatedWillBeCreated')
                 : currentSelection === "reuse_existing"
-                  ? "This issue will reuse an existing workspace when it runs."
-                  : "This issue will use the project default workspace configuration when it runs."}
+                  ? t('issueWorkspace.willReuseExisting')
+                  : t('issueWorkspace.willUseProjectDefault')}
             </div>
           )}
           {currentSelection === "reuse_existing" && selectedReusableExecutionWorkspace && (
@@ -413,7 +416,7 @@ export function IssueWorkspaceCard({
                 to={currentWorkspaceLink}
                 className="text-[11px] text-muted-foreground hover:text-foreground hover:underline"
               >
-                View workspace details →
+                {t('issueWorkspace.viewWorkspaceDetails')}
               </Link>
             </div>
           )}
@@ -453,7 +456,7 @@ export function IssueWorkspaceCard({
                 setDraftExecutionWorkspaceId(e.target.value);
               }}
             >
-              <option value="">Choose an existing workspace</option>
+              <option value="">{t('issueWorkspace.chooseExistingWorkspace')}</option>
               {deduplicatedReusableWorkspaces.map((w) => (
                 <option key={w.id} value={w.id}>
                   {w.name} · {w.status} · {w.branchName ?? w.cwd ?? w.id.slice(0, 8)}

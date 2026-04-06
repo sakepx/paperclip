@@ -19,6 +19,7 @@ import { ChoosePathButton } from "./PathInstructionsModal";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { DraftInput } from "./agent-config-primitives";
 import { InlineEditor } from "./InlineEditor";
+import { useTranslation } from "react-i18next";
 
 const PROJECT_STATUSES = [
   { value: "backlog", label: "Backlog" },
@@ -52,11 +53,12 @@ export type ProjectConfigFieldKey =
   | "execution_workspace_teardown_command";
 
 function SaveIndicator({ state }: { state: ProjectFieldSaveState }) {
+  const { t } = useTranslation('common');
   if (state === "saving") {
     return (
       <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
         <Loader2 className="h-3 w-3 animate-spin" />
-        Saving
+        {t('projectProperties.saving')}
       </span>
     );
   }
@@ -64,7 +66,7 @@ function SaveIndicator({ state }: { state: ProjectFieldSaveState }) {
     return (
       <span className="inline-flex items-center gap-1 text-[11px] text-green-600 dark:text-green-400">
         <Check className="h-3 w-3" />
-        Saved
+        {t('projectProperties.saved')}
       </span>
     );
   }
@@ -72,7 +74,7 @@ function SaveIndicator({ state }: { state: ProjectFieldSaveState }) {
     return (
       <span className="inline-flex items-center gap-1 text-[11px] text-destructive">
         <AlertCircle className="h-3 w-3" />
-        Failed
+        {t('projectProperties.failed')}
       </span>
     );
   }
@@ -160,26 +162,26 @@ function ArchiveDangerZone({
   onArchive: (archived: boolean) => void;
   archivePending?: boolean;
 }) {
+  const { t } = useTranslation('common');
   const [confirming, setConfirming] = useState(false);
   const isArchive = !project.archivedAt;
-  const action = isArchive ? "Archive" : "Unarchive";
 
   return (
     <div className="space-y-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
       <p className="text-sm text-muted-foreground">
         {isArchive
-          ? "Archive this project to hide it from the sidebar and project selectors."
-          : "Unarchive this project to restore it in the sidebar and project selectors."}
+          ? t('projectProperties.archiveDescription')
+          : t('projectProperties.unarchiveDescription')}
       </p>
       {archivePending ? (
         <Button size="sm" variant="destructive" disabled>
           <Loader2 className="h-3 w-3 animate-spin mr-1" />
-          {isArchive ? "Archiving..." : "Unarchiving..."}
+          {isArchive ? t('projectProperties.archiving') : t('projectProperties.unarchiving')}
         </Button>
       ) : confirming ? (
         <div className="flex items-center gap-2">
           <span className="text-sm text-destructive font-medium">
-            {action} &ldquo;{project.name}&rdquo;?
+            {isArchive ? t('projectProperties.archiveProject') : t('projectProperties.unarchiveProject')} &ldquo;{project.name}&rdquo;?
           </span>
           <Button
             size="sm"
@@ -206,9 +208,9 @@ function ArchiveDangerZone({
           onClick={() => setConfirming(true)}
         >
           {isArchive ? (
-            <><Archive className="h-3 w-3 mr-1" />{action} project</>
+            <><Archive className="h-3 w-3 mr-1" />{t('projectProperties.archiveProject')}</>
           ) : (
-            <><ArchiveRestore className="h-3 w-3 mr-1" />{action} project</>
+            <><ArchiveRestore className="h-3 w-3 mr-1" />{t('projectProperties.unarchiveProject')}</>
           )}
         </Button>
       )}
@@ -217,6 +219,7 @@ function ArchiveDangerZone({
 }
 
 export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSaveState, onArchive, archivePending }: ProjectPropertiesProps) {
+  const { t } = useTranslation('common');
   const { selectedCompanyId } = useCompany();
   const queryClient = useQueryClient();
   const [goalOpen, setGoalOpen] = useState(false);
@@ -479,7 +482,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
               onCommit={(name) => commitField("name", { name })}
               immediate
               className="w-full rounded border border-border bg-transparent px-2 py-1 text-sm outline-none"
-              placeholder="Project name"
+              placeholder={t('projectProperties.projectName')}
             />
           ) : (
             <span className="text-sm">{project.name}</span>
@@ -496,12 +499,12 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
               onSave={(description) => commitField("description", { description })}
               as="p"
               className="text-sm text-muted-foreground"
-              placeholder="Add a description..."
+              placeholder={t('projectProperties.addDescription')}
               multiline
             />
           ) : (
             <p className="text-sm text-muted-foreground">
-              {project.description?.trim() || "No description"}
+              {project.description?.trim() || t('projectProperties.noDescription')}
             </p>
           )}
         </PropertyRow>
@@ -565,7 +568,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
               <PopoverContent className="w-56 p-1" align="start">
                 {availableGoals.length === 0 ? (
                   <div className="px-2 py-1.5 text-xs text-muted-foreground">
-                    All goals linked.
+                    {t('projectProperties.allGoalsLinked')}
                   </div>
                 ) : (
                   availableGoals.map((goal) => (
@@ -600,7 +603,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
       <div className="space-y-1 py-4">
         <div className="space-y-2">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <span>Codebase</span>
+            <span>{t('projectProperties.codebase')}</span>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -612,13 +615,13 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 </button>
               </TooltipTrigger>
               <TooltipContent side="top">
-                Repo identifies the source of truth. Local folder is the default place agents write code.
+                {t('projectProperties.codebaseHelp')}
               </TooltipContent>
             </Tooltip>
           </div>
           <div className="space-y-2 rounded-md border border-border/70 p-3">
             <div className="space-y-1">
-              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Repo</div>
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">{t('projectProperties.repo')}</div>
               {codebase.repoUrl ? (
                 <div className="flex items-center justify-between gap-2">
                   {isSafeExternalUrl(codebase.repoUrl) ? (
@@ -649,7 +652,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                         setWorkspaceError(null);
                       }}
                     >
-                      Change repo
+                      {t('projectProperties.changeRepo')}
                     </Button>
                     <Button
                       variant="ghost"
@@ -663,7 +666,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 </div>
               ) : (
                 <div className="flex items-center justify-between gap-2">
-                  <div className="text-xs text-muted-foreground">Not set.</div>
+                  <div className="text-xs text-muted-foreground">{t('projectProperties.notSet')}</div>
                   <Button
                     variant="outline"
                     size="xs"
@@ -674,21 +677,21 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                       setWorkspaceError(null);
                     }}
                   >
-                    Set repo
+                    {t('projectProperties.setRepo')}
                   </Button>
                 </div>
               )}
             </div>
 
             <div className="space-y-1">
-              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Local folder</div>
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">{t('projectProperties.localFolder')}</div>
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0 space-y-1">
                   <div className="min-w-0 truncate font-mono text-xs text-muted-foreground">
                     {codebase.effectiveLocalFolder}
                   </div>
                   {codebase.origin === "managed_checkout" && (
-                    <div className="text-[11px] text-muted-foreground">Paperclip-managed folder.</div>
+                    <div className="text-[11px] text-muted-foreground">{t('projectProperties.paperclipManagedFolder')}</div>
                   )}
                 </div>
                 <div className="flex items-center gap-1">
@@ -702,7 +705,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                       setWorkspaceError(null);
                     }}
                   >
-                    {codebase.localFolder ? "Change local folder" : "Set local folder"}
+                    {codebase.localFolder ? t('projectProperties.changeLocalFolder') : t('projectProperties.setLocalFolder')}
                   </Button>
                   {codebase.localFolder ? (
                     <Button
@@ -843,13 +846,13 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
             <p className="text-xs text-destructive">{workspaceError}</p>
           )}
           {createWorkspace.isError && (
-            <p className="text-xs text-destructive">Failed to save workspace.</p>
+            <p className="text-xs text-destructive">{t('projectProperties.failedToSaveWorkspace')}</p>
           )}
           {removeWorkspace.isError && (
-            <p className="text-xs text-destructive">Failed to delete workspace.</p>
+            <p className="text-xs text-destructive">{t('projectProperties.failedToDeleteWorkspace')}</p>
           )}
           {updateWorkspace.isError && (
-            <p className="text-xs text-destructive">Failed to update workspace.</p>
+            <p className="text-xs text-destructive">{t('projectProperties.failedToUpdateWorkspace')}</p>
           )}
         </div>
 
@@ -859,7 +862,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
 
             <div className="py-1.5 space-y-2">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span>Execution Workspaces</span>
+                <span>{t('projectProperties.executionWorkspaces')}</span>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
@@ -879,7 +882,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 <div className="flex items-center justify-between gap-3">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                      <span>Enable isolated issue checkouts</span>
+                      <span>{t('projectProperties.enableIsolatedCheckouts')}</span>
                       <SaveIndicator state={fieldState("execution_workspace_enabled")} />
                     </div>
                     <div className="text-xs text-muted-foreground">
@@ -1086,7 +1089,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
           <Separator className="my-4" />
           <div className="space-y-4 py-4">
             <div className="text-xs font-medium text-destructive uppercase tracking-wide">
-              Danger Zone
+              {t('projectProperties.dangerZone')}
             </div>
             <ArchiveDangerZone
               project={project}

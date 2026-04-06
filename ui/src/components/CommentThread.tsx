@@ -23,6 +23,7 @@ import { timeAgo } from "../lib/timeAgo";
 import { cn, formatDateTime } from "../lib/utils";
 import { restoreSubmittedCommentDraft } from "../lib/comment-submit-draft";
 import { PluginSlotOutlet } from "@/plugins/slots";
+import { useTranslation } from "react-i18next";
 
 interface CommentWithRunMeta extends IssueComment {
   runId?: string | null;
@@ -203,12 +204,13 @@ function runStatusClass(status: string) {
 }
 
 function CopyMarkdownButton({ text }: { text: string }) {
+  const { t } = useTranslation('common');
   const [copied, setCopied] = useState(false);
   return (
     <button
       type="button"
       className="text-muted-foreground hover:text-foreground transition-colors"
-      title="Copy as markdown"
+      title={t('commentThread.copyAsMarkdown')}
       onClick={() => {
         navigator.clipboard.writeText(text).then(() => {
           setCopied(true);
@@ -249,6 +251,7 @@ function CommentCard({
   highlightCommentId?: string | null;
   queued?: boolean;
 }) {
+  const { t } = useTranslation('common');
   const isHighlighted = highlightCommentId === comment.id;
   const isPending = comment.clientStatus === "pending";
   const isQueued = queued || comment.queueState === "queued" || comment.clientStatus === "queued";
@@ -274,12 +277,12 @@ function CommentCard({
             />
           </Link>
         ) : (
-          <Identity name="You" size="sm" />
+          <Identity name={t('commentThread.you')} size="sm" />
         )}
         <span className="flex items-center gap-1.5">
           {isQueued ? (
             <span className="inline-flex items-center rounded-full border border-amber-400/60 bg-amber-100/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-amber-800 dark:border-amber-400/40 dark:bg-amber-500/20 dark:text-amber-200">
-              Queued
+              {t('commentThread.queued')}
             </span>
           ) : null}
           {companyId && !isPending ? (
@@ -299,7 +302,7 @@ function CommentCard({
             />
           ) : null}
           {isPending ? (
-            <span className="text-xs text-muted-foreground">{isQueued ? "Queueing..." : "Sending..."}</span>
+            <span className="text-xs text-muted-foreground">{isQueued ? t('commentThread.queueing') : t('commentThread.sending')}</span>
           ) : (
             <a
               href={`#comment-${comment.id}`}
@@ -387,6 +390,7 @@ function TimelineEventCard({
   agentMap?: Map<string, Agent>;
   currentUserId?: string | null;
 }) {
+  const { t } = useTranslation('common');
   const actorName = formatTimelineActorName(event.actorType, event.actorId, agentMap, currentUserId);
 
   return (
@@ -398,7 +402,7 @@ function TimelineEventCard({
       <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-sm">
           <span className="font-medium text-foreground">{actorName}</span>
-          <span className="text-muted-foreground">updated this task</span>
+          <span className="text-muted-foreground">{t('commentThread.updatedThisTask')}</span>
           <a
             href={`#activity-${event.id}`}
             className="text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
@@ -470,8 +474,9 @@ const TimelineList = memo(function TimelineList({
   votingTargetId?: string | null;
   highlightCommentId?: string | null;
 }) {
+  const { t } = useTranslation('common');
   if (timeline.length === 0) {
-    return <p className="text-sm text-muted-foreground">No timeline entries yet.</p>;
+    return <p className="text-sm text-muted-foreground">{t('commentThread.noTimelineEntries')}</p>;
   }
 
   return (
@@ -572,6 +577,7 @@ export function CommentThread({
   interruptingQueuedRunId = null,
   composerDisabledReason = null,
 }: CommentThreadProps) {
+  const { t } = useTranslation('common');
   const [body, setBody] = useState("");
   const [reopen, setReopen] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -746,7 +752,7 @@ export function CommentThread({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold">Timeline ({timeline.length + queuedComments.length})</h3>
+      <h3 className="text-sm font-semibold">{t('commentThread.timeline')} ({timeline.length + queuedComments.length})</h3>
 
       <TimelineList
         timeline={timeline}
@@ -768,7 +774,7 @@ export function CommentThread({
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
             <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300">
-              Queued Comments ({queuedComments.length})
+              {t('commentThread.queuedComments')} ({queuedComments.length})
             </h4>
             {onInterruptQueued && queuedComments[0]?.queueTargetRunId ? (
               <Button
@@ -778,7 +784,7 @@ export function CommentThread({
                 disabled={interruptingQueuedRunId === queuedComments[0].queueTargetRunId}
                 onClick={() => void onInterruptQueued(queuedComments[0]!.queueTargetRunId!)}
               >
-                {interruptingQueuedRunId === queuedComments[0].queueTargetRunId ? "Interrupting..." : "Interrupt"}
+                {interruptingQueuedRunId === queuedComments[0].queueTargetRunId ? t('commentThread.interrupting') : t('commentThread.interrupt')}
               </Button>
             ) : null}
           </div>
@@ -808,7 +814,7 @@ export function CommentThread({
             ref={editorRef}
             value={body}
             onChange={setBody}
-            placeholder="Leave a comment..."
+            placeholder={t('commentThread.leaveComment')}
             mentions={mentions}
             onSubmit={handleSubmit}
             imageUploadHandler={imageUploadHandler}
@@ -829,7 +835,7 @@ export function CommentThread({
                   size="icon-sm"
                   onClick={() => attachInputRef.current?.click()}
                   disabled={attaching}
-                  title="Attach image"
+                  title={t('commentThread.attachImage')}
                 >
                   <Paperclip className="h-4 w-4" />
                 </Button>
@@ -842,7 +848,7 @@ export function CommentThread({
                 onChange={(e) => setReopen(e.target.checked)}
                 className="rounded border-border"
               />
-              Re-open
+              {t('commentThread.reopen')}
             </label>
             {enableReassign && reassignOptions.length > 0 && (
               <InlineEntitySelector
@@ -883,7 +889,7 @@ export function CommentThread({
               />
             )}
             <Button size="sm" disabled={!canSubmit} onClick={handleSubmit}>
-              {submitting ? "Posting..." : "Comment"}
+              {submitting ? t('commentThread.posting') : t('commentThread.comment')}
             </Button>
           </div>
         </div>

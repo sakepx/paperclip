@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { User, Hexagon, ArrowUpRight, Tag, Plus, Trash2 } from "lucide-react";
 import { AgentIcon } from "./AgentIconPicker";
+import { useTranslation } from "react-i18next";
 
 function defaultProjectWorkspaceIdForProject(project: {
   workspaces?: Array<{ id: string; isPrimary: boolean }>;
@@ -118,6 +119,7 @@ function PropertyPicker({
 }
 
 export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProps) {
+  const { t } = useTranslation('common');
   const { selectedCompanyId } = useCompany();
   const queryClient = useQueryClient();
   const companyId = issue.companyId ?? selectedCompanyId;
@@ -244,7 +246,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
   ) : (
     <>
       <Tag className="h-3.5 w-3.5 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">No labels</span>
+      <span className="text-sm text-muted-foreground">{t('issueProperties.noLabels')}</span>
     </>
   );
 
@@ -252,7 +254,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
     <>
       <input
         className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-border mb-1 placeholder:text-muted-foreground/50"
-        placeholder="Search labels..."
+        placeholder={t('issueProperties.searchLabels')}
         value={labelSearch}
         onChange={(e) => setLabelSearch(e.target.value)}
         autoFocus={!inline}
@@ -299,7 +301,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
           />
           <input
             className="flex-1 px-2 py-1.5 text-xs bg-transparent outline-none rounded placeholder:text-muted-foreground/50"
-            placeholder="New label"
+            placeholder={t('issueProperties.newLabel')}
             value={newLabelName}
             onChange={(e) => setNewLabelName(e.target.value)}
           />
@@ -315,7 +317,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
           }
         >
           <Plus className="h-3 w-3" />
-          {createLabel.isPending ? "Creating…" : "Create label"}
+          {createLabel.isPending ? t('issueProperties.creating') : t('issueProperties.createLabel')}
         </button>
       </div>
     </>
@@ -331,7 +333,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
   ) : (
     <>
       <User className="h-3.5 w-3.5 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">Unassigned</span>
+      <span className="text-sm text-muted-foreground">{t('issueProperties.noAssignee')}</span>
     </>
   );
 
@@ -339,7 +341,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
     <>
       <input
         className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-border mb-1 placeholder:text-muted-foreground/50"
-        placeholder="Search assignees..."
+        placeholder={t('issueProperties.searchAssignees')}
         value={assigneeSearch}
         onChange={(e) => setAssigneeSearch(e.target.value)}
         autoFocus={!inline}
@@ -352,7 +354,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
           )}
           onClick={() => { onUpdate({ assigneeAgentId: null, assigneeUserId: null }); setAssigneeOpen(false); }}
         >
-          No assignee
+          {t('issueProperties.noAssignee')}
         </button>
         {currentUserId && (
           <button
@@ -366,7 +368,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
             }}
           >
             <User className="h-3 w-3 shrink-0 text-muted-foreground" />
-            Assign to me
+            {t('issueProperties.assignToMe')}
           </button>
         )}
         {issue.createdByUserId && issue.createdByUserId !== currentUserId && (
@@ -381,7 +383,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
             }}
           >
             <User className="h-3 w-3 shrink-0 text-muted-foreground" />
-            {creatorUserLabel ? `Assign to ${creatorUserLabel}` : "Assign to requester"}
+            {creatorUserLabel ? t('issueProperties.assignTo', { name: creatorUserLabel }) : t('issueProperties.assignToRequester')}
           </button>
         )}
         {sortedAgents
@@ -418,7 +420,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
   ) : (
     <>
       <Hexagon className="h-3.5 w-3.5 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">No project</span>
+      <span className="text-sm text-muted-foreground">{t('issueProperties.noProject')}</span>
     </>
   );
 
@@ -426,7 +428,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
     <>
       <input
         className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-border mb-1 placeholder:text-muted-foreground/50"
-        placeholder="Search projects..."
+        placeholder={t('issueProperties.searchProjects')}
         value={projectSearch}
         onChange={(e) => setProjectSearch(e.target.value)}
         autoFocus={!inline}
@@ -448,7 +450,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
             setProjectOpen(false);
           }}
         >
-          No project
+          {t('issueProperties.noProject')}
         </button>
         {orderedProjects
           .filter((p) => {

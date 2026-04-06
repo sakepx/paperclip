@@ -12,6 +12,7 @@ import {
   providerDisplayName,
   quotaSourceDisplayName,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 // ordered display labels for rolling-window rows
 const ROLLING_WINDOWS = ["5h", "24h", "7d"] as const;
@@ -123,6 +124,7 @@ export function ProviderQuotaCard({
     () => Math.max(...windowRows.map((r) => r.costCents), 0),
     [windowRows],
   );
+  const { t } = useTranslation('common');
   const isClaudeQuotaPanel = provider === "anthropic";
   const isCodexQuotaPanel = provider === "openai" && quotaSource?.startsWith("codex-");
   const supportsSubscriptionQuota = provider === "anthropic" || provider === "openai";
@@ -162,14 +164,14 @@ export function ProviderQuotaCard({
         {hasBudget && (
           <div className="space-y-3">
             <QuotaBar
-              label="Period spend"
+              label={t('providerQuota.periodSpend')}
               percentUsed={budgetPct}
               leftLabel={formatCents(totalCostCents)}
-              rightLabel={`${Math.round(budgetPct)}% of allocation`}
+              rightLabel={t('providerQuota.percentOfAllocation', { percent: Math.round(budgetPct) })}
               showDeficitNotch={showDeficitNotch}
             />
             <QuotaBar
-              label="This week"
+              label={t('providerQuota.thisWeek')}
               percentUsed={weekPct}
               leftLabel={formatCents(weekSpendCents)}
               rightLabel={`~${formatCents(Math.round(weeklyBudgetShare))} / wk`}
@@ -184,7 +186,7 @@ export function ProviderQuotaCard({
             <div className="border-t border-border" />
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                Rolling windows
+                {t('providerQuota.rollingWindows')}
               </p>
               <div className="space-y-2.5">
                 {ROLLING_WINDOWS.map((w) => {
@@ -223,7 +225,7 @@ export function ProviderQuotaCard({
             <div className="border-t border-border" />
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                Subscription
+                {t('providerQuota.subscription')}
               </p>
               <p className="text-xs text-muted-foreground">
                 <span className="font-mono text-foreground">{totalSubRuns}</span> runs
@@ -247,7 +249,7 @@ export function ProviderQuotaCard({
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {Math.round(subSharePct)}% of token usage via subscription
+                    {t('providerQuota.tokenUsageViaSub', { percent: Math.round(subSharePct) })}
                   </p>
                 </>
               )}
@@ -311,7 +313,7 @@ export function ProviderQuotaCard({
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Subscription quota
+                  {t('providerQuota.subscriptionQuota')}
                 </p>
                 {quotaSource && !isClaudeQuotaPanel && !isCodexQuotaPanel ? (
                   <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">

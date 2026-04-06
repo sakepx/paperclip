@@ -39,6 +39,7 @@ import { normalizeMarkdown } from "../lib/normalize-markdown";
 import { pasteNormalizationPlugin } from "../lib/paste-normalization";
 import { cn } from "../lib/utils";
 import { useEditorAutocomplete, type SkillCommandOption } from "../context/EditorAutocompleteContext";
+import { useTranslation } from "react-i18next";
 
 /* ---- Mention types ---- */
 
@@ -285,6 +286,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
   mentions,
   onSubmit,
 }: MarkdownEditorProps, forwardedRef) {
+  const { t } = useTranslation('common');
   const { slashCommands } = useEditorAutocomplete();
   const containerRef = useRef<HTMLDivElement>(null);
   const ref = useRef<MDXEditorMethods>(null);
@@ -392,7 +394,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
             }, 100);
             return src;
           } catch (err) {
-            const message = err instanceof Error ? err.message : "Image upload failed";
+            const message = err instanceof Error ? err.message : t('markdownEditor.imageUploadFailed');
             setUploadError(message);
             throw err;
           }

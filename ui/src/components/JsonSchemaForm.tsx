@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ChevronDown,
   ChevronRight,
@@ -1006,6 +1007,7 @@ export function JsonSchemaForm({
     [onChange, values],
   );
 
+  const { t } = useTranslation('common');
   if (Object.keys(properties).length === 0) {
     return (
       <div
@@ -1014,7 +1016,7 @@ export function JsonSchemaForm({
           className,
         )}
       >
-        No configuration options available.
+        {t('jsonSchemaForm.noConfigOptions')}
       </div>
     );
   }

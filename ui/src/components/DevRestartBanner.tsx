@@ -1,4 +1,5 @@
 import { AlertTriangle, RotateCcw, TimerReset } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { DevServerHealthStatus } from "../api/health";
 
 function formatRelativeTimestamp(value: string | null): string | null {
@@ -16,18 +17,19 @@ function formatRelativeTimestamp(value: string | null): string | null {
   return `${deltaDays}d ago`;
 }
 
-function describeReason(devServer: DevServerHealthStatus): string {
-  if (devServer.reason === "backend_changes_and_pending_migrations") {
-    return "backend files changed and migrations are pending";
-  }
-  if (devServer.reason === "pending_migrations") {
-    return "pending migrations need a fresh boot";
-  }
-  return "backend files changed since this server booted";
-}
-
 export function DevRestartBanner({ devServer }: { devServer?: DevServerHealthStatus }) {
+  const { t } = useTranslation('common');
   if (!devServer?.enabled || !devServer.restartRequired) return null;
+
+  const describeReason = (ds: DevServerHealthStatus): string => {
+    if (ds.reason === "backend_changes_and_pending_migrations") {
+      return t('components.devRestartBanner.backendChangesAndPendingMigrations');
+    }
+    if (ds.reason === "pending_migrations") {
+      return t('components.devRestartBanner.pendingMigrationsNeedBoot');
+    }
+    return t('components.devRestartBanner.backendFilesChanged');
+  };
 
   const changedAt = formatRelativeTimestamp(devServer.lastChangedAt);
   const sample = devServer.changedPathsSample.slice(0, 3);
@@ -38,28 +40,28 @@ export function DevRestartBanner({ devServer }: { devServer?: DevServerHealthSta
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em]">
             <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-            <span>Restart Required</span>
+            <span>{t('components.devRestartBanner.restartRequired')}</span>
             {devServer.autoRestartEnabled ? (
               <span className="rounded-full bg-amber-900/10 px-2 py-0.5 text-[10px] tracking-[0.14em] dark:bg-amber-100/10">
-                Auto-Restart On
+                {t('components.devRestartBanner.autoRestartOn')}
               </span>
             ) : null}
           </div>
           <p className="mt-1 text-sm">
             {describeReason(devServer)}
-            {changedAt ? ` · updated ${changedAt}` : ""}
+            {changedAt ? ` · ${t('components.devRestartBanner.updated', { time: changedAt })}` : ""}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-amber-900/80 dark:text-amber-100/75">
             {sample.length > 0 ? (
               <span>
-                Changed: {sample.join(", ")}
-                {devServer.changedPathCount > sample.length ? ` +${devServer.changedPathCount - sample.length} more` : ""}
+                {t('components.devRestartBanner.changed', { files: sample.join(", ") })}
+                {devServer.changedPathCount > sample.length ? ` ${t('components.devRestartBanner.moreFiles', { count: devServer.changedPathCount - sample.length })}` : ""}
               </span>
             ) : null}
             {devServer.pendingMigrations.length > 0 ? (
               <span>
-                Pending migrations: {devServer.pendingMigrations.slice(0, 2).join(", ")}
-                {devServer.pendingMigrations.length > 2 ? ` +${devServer.pendingMigrations.length - 2} more` : ""}
+                {t('components.devRestartBanner.pendingMigrations', { migrations: devServer.pendingMigrations.slice(0, 2).join(", ") })}
+                {devServer.pendingMigrations.length > 2 ? ` ${t('components.devRestartBanner.moreMigrations', { count: devServer.pendingMigrations.length - 2 })}` : ""}
               </span>
             ) : null}
           </div>
@@ -69,17 +71,17 @@ export function DevRestartBanner({ devServer }: { devServer?: DevServerHealthSta
           {devServer.waitingForIdle ? (
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-900/10 px-3 py-1.5 dark:bg-amber-100/10">
               <TimerReset className="h-3.5 w-3.5" />
-              <span>Waiting for {devServer.activeRunCount} live run{devServer.activeRunCount === 1 ? "" : "s"} to finish</span>
+              <span>{t('components.devRestartBanner.waitingForRuns', { count: devServer.activeRunCount })}</span>
             </div>
           ) : devServer.autoRestartEnabled ? (
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-900/10 px-3 py-1.5 dark:bg-amber-100/10">
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Auto-restart will trigger when the instance is idle</span>
+              <span>{t('components.devRestartBanner.autoRestartIdle')}</span>
             </div>
           ) : (
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-900/10 px-3 py-1.5 dark:bg-amber-100/10">
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Restart <code>pnpm dev:once</code> after the active work is safe to interrupt</span>
+              <span>{t('components.devRestartBanner.manualRestartBefore')} <code>pnpm dev:once</code> {t('components.devRestartBanner.manualRestartAfter')}</span>
             </div>
           )}
         </div>
