@@ -56,6 +56,7 @@ async function buildSkillsDir(config: Record<string, unknown>): Promise<string> 
     await fs.symlink(
       entry.source,
       path.join(target, entry.runtimeName),
+      "junction",
     );
   }
   return tmp;
