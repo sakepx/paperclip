@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams, useNavigate, useLocation, Navigate } from "@/lib/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PROJECT_COLORS, isUuidLike, type BudgetPolicySummary, type ExecutionWorkspace } from "@paperclipai/shared";
@@ -63,10 +64,12 @@ function OverviewContent({
   project,
   onUpdate,
   imageUploadHandler,
+  t,
 }: {
   project: { description: string | null; status: string; targetDate: string | null };
   onUpdate: (data: Record<string, unknown>) => void;
   imageUploadHandler?: (file: File) => Promise<string>;
+  t: (key: string) => string;
 }) {
   return (
     <div className="space-y-6">
@@ -75,7 +78,7 @@ function OverviewContent({
         onSave={(description) => onUpdate({ description })}
         as="p"
         className="text-sm text-muted-foreground"
-        placeholder="Add a description..."
+        placeholder={t("projectDetail.addDescription")}
         multiline
         imageUploadHandler={imageUploadHandler}
       />
@@ -103,9 +106,11 @@ function OverviewContent({
 function ColorPicker({
   currentColor,
   onSelect,
+  t,
 }: {
   currentColor: string;
   onSelect: (color: string) => void;
+  t: (key: string) => string;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -127,7 +132,7 @@ function ColorPicker({
         onClick={() => setOpen(!open)}
         className="shrink-0 h-5 w-5 rounded-md cursor-pointer hover:ring-2 hover:ring-foreground/20 transition-[box-shadow]"
         style={{ backgroundColor: currentColor }}
-        aria-label="Change project color"
+        aria-label={t("projectDetail.changeColor")}
       />
       {open && (
         <div className="absolute top-full left-0 mt-2 p-2 bg-popover border border-border rounded-lg shadow-lg z-50 w-max">
@@ -215,11 +220,13 @@ function ProjectWorkspacesContent({
   projectId,
   projectRef,
   summaries,
+  t,
 }: {
   companyId: string;
   projectId: string;
   projectRef: string;
   summaries: ReturnType<typeof buildProjectWorkspaceSummaries>;
+  t: (key: string) => string;
 }) {
   const queryClient = useQueryClient();
   const [runtimeActionKey, setRuntimeActionKey] = useState<string | null>(null);
@@ -321,7 +328,7 @@ function ProjectWorkspacesContent({
                 ) : (
                   <Play className="h-3 w-3" />
                 )}
-                {hasRunningServices ? "Stop" : "Start"}
+                {hasRunningServices ? t("projectDetail.stop") : t("projectDetail.start")}
               </Button>
             ) : null}
             {summary.kind === "execution_workspace" && summary.executionWorkspaceId && summary.executionWorkspaceStatus ? (
@@ -335,7 +342,7 @@ function ProjectWorkspacesContent({
                   status: summary.executionWorkspaceStatus!,
                 })}
               >
-                {summary.executionWorkspaceStatus === "cleanup_failed" ? "Retry close" : "Close"}
+                {summary.executionWorkspaceStatus === "cleanup_failed" ? t("projectDetail.retryClose") : t("projectDetail.close")}
               </Button>
             ) : null}
           </div>
@@ -355,7 +362,7 @@ function ProjectWorkspacesContent({
               <span className="truncate font-mono" title={summary.cwd}>
                 {truncatePath(summary.cwd)}
               </span>
-              <CopyText text={summary.cwd} className="shrink-0" copiedLabel="Path copied">
+              <CopyText text={summary.cwd} className="shrink-0" copiedLabel={t("projectDetail.pathCopied")}>
                 <Copy className="h-3 w-3" />
               </CopyText>
             </div>
@@ -377,7 +384,7 @@ function ProjectWorkspacesContent({
         {/* Issues */}
         {summary.issues.length > 0 ? (
           <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-            <span className="font-medium text-muted-foreground/70">Issues</span>
+            <span className="font-medium text-muted-foreground/70">{t("projectDetail.issues")}</span>
             {visibleIssues.map((issue) => (
               <IssuesQuicklook key={issue.id} issue={issue}>
                 <Link
@@ -440,6 +447,7 @@ function ProjectWorkspacesContent({
 /* ── Main project page ── */
 
 export function ProjectDetail() {
+  const { t } = useTranslation();
   const { companyPrefix, projectId, filter } = useParams<{
     companyPrefix?: string;
     projectId: string;
@@ -573,7 +581,7 @@ export function ProjectDetail() {
     },
     onError: (_, archived) => {
       pushToast({
-        title: archived ? "Failed to archive project" : "Failed to unarchive project",
+        title: archived ? t("projectDetail.failedToArchive") : t("projectDetail.failedToUnarchive"),
         tone: "error",
       });
     },
@@ -596,10 +604,10 @@ export function ProjectDetail() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Projects", href: "/projects" },
-      { label: project?.name ?? routeProjectRef ?? "Project" },
+      { label: t("nav.projects"), href: "/projects" },
+      { label: project?.name ?? routeProjectRef ?? t("projectDetail.project") },
     ]);
-  }, [setBreadcrumbs, project, routeProjectRef]);
+  }, [setBreadcrumbs, project, routeProjectRef, t]);
 
   useEffect(() => {
     if (!project) return;
@@ -798,6 +806,7 @@ export function ProjectDetail() {
           <ColorPicker
             currentColor={project.color ?? "#6366f1"}
             onSelect={(color) => updateProject.mutate({ color })}
+            t={t}
           />
         </div>
         <div className="min-w-0 space-y-2">
@@ -850,11 +859,11 @@ export function ProjectDetail() {
       <Tabs value={activeTab ?? "list"} onValueChange={(value) => handleTabChange(value as ProjectTab)}>
         <PageTabBar
           items={[
-            { value: "list", label: "Issues" },
-            { value: "overview", label: "Overview" },
-            ...(showWorkspacesTab ? [{ value: "workspaces", label: "Workspaces" }] : []),
-            { value: "configuration", label: "Configuration" },
-            { value: "budget", label: "Budget" },
+            { value: "list", label: t("projectDetail.issues") },
+            { value: "overview", label: t("projectDetail.overview") },
+            ...(showWorkspacesTab ? [{ value: "workspaces", label: t("projectDetail.workspaces") }] : []),
+            { value: "configuration", label: t("projectDetail.configuration") },
+            { value: "budget", label: t("projectDetail.budget") },
             ...pluginTabItems.map((item) => ({
               value: item.value,
               label: item.label,
@@ -874,6 +883,7 @@ export function ProjectDetail() {
             const asset = await uploadImage.mutateAsync(file);
             return asset.contentPath;
           }}
+          t={t}
         />
       )}
 
@@ -891,6 +901,7 @@ export function ProjectDetail() {
               projectId={project.id}
               projectRef={canonicalProjectRef}
               summaries={workspaceSummaries}
+              t={t}
             />
           )
         ) : (
