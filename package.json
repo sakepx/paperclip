@@ -1,5 +1,6 @@
 {
   "name": "paperclip",
+  "description": "AIエージェントチームでビジネスを運営するオーケストレーションプラットフォーム",
   "private": true,
   "type": "module",
   "scripts": {
